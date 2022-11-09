@@ -23,7 +23,9 @@ type CalculateFinalPriceUseCase struct {
 }
 
 func NewCalculateFinalPriceUseCase(orderRepository database.OrderRepository) *CalculateFinalPriceUseCase {
-	return &CalculateFinalPriceUseCase{OrderRepository: &orderRepository}
+	return &CalculateFinalPriceUseCase {
+		OrderRepository: &orderRepository,
+	}
 }
 
 func (c *CalculateFinalPriceUseCase) Execute(input OrderInputDTO) (*OrderOutputDTO, error) {

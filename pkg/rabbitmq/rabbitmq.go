@@ -7,13 +7,11 @@ import (
 func OpenChannel() (*amqp.Channel, error) {
 	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672")
 	if err != nil {
-		// return nil, err
-		panic(err)
+		return nil, err
 	}
 	ch, err := conn.Channel()
 	if err != nil {
-		// return nil, err
-		panic(err)
+		return nil, err
 	}
 	return ch, nil
 }

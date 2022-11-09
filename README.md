@@ -52,11 +52,6 @@
 - sudo mv go /usr/local
 - export PATH=$PATH:/usr/local/go/bin
 
-## Guia
-
-- Iniciando um projeto Go: go mod init github.com/rodolfoHOk/fullcycle.go-intensivo
-- Baixando as dependências: go mod tidy
-
 ## Concorrência com Go
 
 - Multithreading no Go é Simples
@@ -77,28 +72,15 @@
 - (=) entre variáveis sem (*) faz uma cópia da variável alocando em outro endereço de memória
 - (=) com ponteiro (*) muda a variável apontada
 
+## Guia de comandos
+
+- Iniciando um projeto Go exemplo: go mod init github.com/rodolfoHOk/fullcycle.go-intensivo
+- Baixando as dependências: go mod tidy
+- Fazer o build do projeto exemplo: go build cmd/consumer/main.go
+- Fazer o build escolhendo o sistema operacional exemplo: GOOS=windows go build cmd/consumer/main.go 
+
 ## Links
 
-- https://goexpert.fullcycle.com.br/curso/
-
+- https://grafana.com/grafana/dashboards/
 - https://github.com/devfullcycle/gointensivo
-
-## Temporário: onde tem mão na massa na aula 2?
-
-- https://www.youtube.com/watch?v=4yNdsgUTQNw
-
-- 1h15min - 1h35min:
-pasta pkg/rabbitmq
-docker-compose.yaml
-cmd/consumer
-- 1h37min - 1h38min:
-build do programa
-- 1h40min - 1h46min:
-cmd/producer
-- 1h48min - 1h54min:
-grafana
-prometheus
-cmd/producer
-cmd/consumer
-
-parei hoje: 1:28:00
+- https://goexpert.fullcycle.com.br/curso/
