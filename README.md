@@ -10,6 +10,7 @@
 - Prometheus
 - Grafana
 - Docker
+- SQLite (para testes)
 
 ## Vantagens da linguagem GO
 
@@ -72,7 +73,7 @@
 - (=) entre variáveis sem (*) faz uma cópia da variável alocando em outro endereço de memória
 - (=) com ponteiro (*) muda a variável apontada
 
-## Guia de comandos
+## Guia de comandos do Go
 
 - Iniciando um projeto Go exemplo: go mod init github.com/rodolfoHOk/fullcycle.go-intensivo
 - Baixando as dependências: go mod tidy
@@ -82,5 +83,17 @@
 ## Links
 
 - https://grafana.com/grafana/dashboards/
-- https://github.com/devfullcycle/gointensivo
-- https://goexpert.fullcycle.com.br/curso/
+
+## Guia Deploy
+
+### Docker
+
+- Criando a imagem: docker build -t rodolfohok/gointensivo:latest -f Dockerfile.prod .
+- Caso não logado no docker hub: docker login
+- Subindo a imagem para o docker hub: docker push rodolfohok/gointensivo
+
+### Kubernetes
+
+- Criar cluster: kind create cluster --name=gointensivo
+- Colocando o cluster no contexto do Kubernetes: kubectl cluster-info --context kind-gointensivo
+- Configurando o Kubernetes aplicando o deployment e service: kubectl apply -f k8s

@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"time"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/rodolfoHOk/fullcycle.go-intensivo/internal/order/infra/database"
@@ -30,7 +32,28 @@ func main() {
 	out := make(chan amqp.Delivery) 
 	go rabbitmq.Consumer(ch, out)
 
-	for msg := range out {
+	// forever := make(chan bool) // necessário para manter a aplicação rodando antes de inserirmos o servidor http
+	quantityWorker := 50
+	for i := 1; i <= quantityWorker; i++ {
+		go worker(out, uc, i)
+	}
+	// <-forever // necessário para manter a aplicação rodando antes de inserirmos o servidor http
+
+	http.HandleFunc("/total", func(w http.ResponseWriter, r *http.Request){
+		getTotalUC := usecase.NewGetTotalUseCase(repository)
+		total, err := getTotalUC.Execute()
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+		}
+		json.NewEncoder(w).Encode(total)
+	})
+
+	http.ListenAndServe(":8080", nil)
+}
+
+func worker(deliveryMessage <- chan amqp.Delivery, uc *usecase.CalculateFinalPriceUseCase, workerId int) {
+	for msg := range deliveryMessage {
 		var inputDTO usecase.OrderInputDTO
 		err := json.Unmarshal(msg.Body, &inputDTO)
 		if err != nil {
@@ -41,7 +64,7 @@ func main() {
 			panic(err)
 		}
 		msg.Ack(false)
-		fmt.Println(outputDTO)
-		// time.Sleep(500 * time.Millisecond) // add line for testing Grafana + Prometheus only
+		fmt.Printf("Worker %d has processed order %s\n", workerId, outputDTO.ID)
+		time.Sleep(1 * time.Second)
 	}
 }
